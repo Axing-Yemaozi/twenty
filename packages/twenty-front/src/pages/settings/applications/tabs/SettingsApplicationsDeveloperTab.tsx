@@ -1,9 +1,6 @@
-import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
-import { getDocumentationUrl } from '@/support/utils/getDocumentationUrl';
 import { Table } from '@/ui/layout/table/components/Table';
 import { TableHeader } from '@/ui/layout/table/components/TableHeader';
 import { TableRow } from '@/ui/layout/table/components/TableRow';
-import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { useQuery } from '@apollo/client/react';
 import { styled } from '@linaria/react';
 import { useLingui } from '@lingui/react/macro';
@@ -12,7 +9,7 @@ import { ThemeContext, themeCssVariables } from 'twenty-ui/theme-constants';
 import { SettingsPath } from 'twenty-shared/types';
 import { getSettingsPath } from 'twenty-shared/utils';
 import { CommandBlock } from 'twenty-ui/data-display';
-import { IconArrowUpRight, IconChevronRight, IconCopy } from 'twenty-ui/icon';
+import { IconChevronRight, IconCopy } from 'twenty-ui/icon';
 import { H2Title } from 'twenty-ui/typography';
 import { Button, SearchInput } from 'twenty-ui/input';
 import { Section } from 'twenty-ui/layout';
@@ -31,12 +28,6 @@ import {
 import { useHasPermissionFlag } from '@/settings/roles/hooks/useHasPermissionFlag';
 import { SettingsClaimApplicationSection } from '~/pages/settings/applications/components/SettingsClaimApplicationSection';
 
-const StyledButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: ${themeCssVariables.spacing[2]};
-`;
-
 const StyledSearchInputContainer = styled.div`
   padding-bottom: ${themeCssVariables.spacing[2]};
 `;
@@ -49,8 +40,6 @@ const StyledTableRowsContainer = styled.div`
 export const SettingsApplicationsDeveloperTab = () => {
   const { t } = useLingui();
   const { theme } = useContext(ThemeContext);
-  const currentWorkspaceMember = useAtomStateValue(currentWorkspaceMemberState);
-
   const { copyToClipboard } = useCopyToClipboard();
 
   const { data } = useQuery(FindManyApplicationRegistrationsDocument);
@@ -103,23 +92,6 @@ export const SettingsApplicationsDeveloperTab = () => {
           description={t`You can either create a private app or share it to others`}
         />
         <CommandBlock commands={createCommands} button={createCopyButton} />
-        <StyledButtonContainer>
-          <Button
-            Icon={IconArrowUpRight}
-            variant={'secondary'}
-            size={'small'}
-            title={t`Read documentation`}
-            onClick={() =>
-              window.open(
-                getDocumentationUrl({
-                  locale: currentWorkspaceMember?.locale,
-                  path: '/developers/extend/apps/getting-started',
-                }),
-                '_blank',
-              )
-            }
-          />
-        </StyledButtonContainer>
       </Section>
 
       {canClaimApplications && isAppClaimingEnabled && (

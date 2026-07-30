@@ -1,6 +1,5 @@
 import { Logo } from '@/auth/components/Logo';
 import { Title } from '@/auth/components/Title';
-import { FooterNote } from '@/auth/sign-in-up/components/FooterNote';
 import { WorkspaceSelectionFooter } from '@/auth/sign-in-up/components/WorkspaceSelectionFooter';
 import { SignInUpStep } from '@/auth/states/signInUpStepState';
 import { styled } from '@linaria/react';
@@ -57,15 +56,6 @@ export const SignInUpStandardContent = ({
       <StyledFormContainer>{signInUpForm}</StyledFormContainer>
       {signInUpStep === SignInUpStep.WorkspaceSelection && (
         <WorkspaceSelectionFooter />
-      )}
-      {![
-        SignInUpStep.Password,
-        SignInUpStep.TwoFactorAuthenticationProvision,
-        SignInUpStep.TwoFactorAuthenticationVerification,
-        SignInUpStep.WorkspaceSelection,
-        SignInUpStep.WorkspaceCreation,
-      ].includes(signInUpStep) && (
-        <FooterNote secondaryAgreement="dataProcessingAgreement" />
       )}
     </ModalContent>
   );

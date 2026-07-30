@@ -4,7 +4,7 @@ import {
   type LanguageModelUsage,
   type StepResult,
   type ToolSet,
-  generateText,
+  streamText,
 } from 'ai';
 
 import { BillingUsageService } from 'src/engine/core-modules/billing/services/billing-usage.service';
@@ -43,16 +43,22 @@ export class AgentTitleGenerationService {
     let steps: StepResult<ToolSet>[] | undefined;
 
     try {
-      const result = await generateText({
+      const result = streamText({
         model: defaultModel.model,
         prompt: `Generate a concise, descriptive title (maximum 60 characters) for a chat thread based on the following message. The title should capture the main topic or purpose of the conversation. Return only the title, nothing else. Message: "${messageContent}"`,
         experimental_telemetry: AI_TELEMETRY_CONFIG,
       });
 
-      usage = result.usage;
-      steps = result.steps;
+      const [title, resultUsage, resultSteps] = await Promise.all([
+        result.text,
+        result.usage,
+        result.steps,
+      ]);
 
-      return this.cleanTitle(result.text);
+      usage = resultUsage;
+      steps = resultSteps;
+
+      return this.cleanTitle(title);
     } catch (error) {
       this.logger.error('Failed to generate title with AI:', error);
 

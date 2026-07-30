@@ -23,6 +23,7 @@ import { type RawAiProviderConfig } from '@/settings/admin-panel/ai/types/RawAiP
 import { slugify } from 'transliteration';
 import { getProviderIcon } from '@/settings/admin-panel/ai/utils/getProviderIcon';
 import { SaveAndCancelButtons } from '@/settings/components/SaveAndCancelButtons/SaveAndCancelButtons';
+import { SettingsCard } from '@/settings/components/SettingsCard';
 import { SettingsPageContainer } from '@/settings/components/SettingsPageContainer';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { Select } from '@/ui/input/components/Select';
@@ -52,6 +53,20 @@ export const SettingsAdminNewAiProvider = () => {
     null,
   );
   const [isCustomMode, setIsCustomMode] = useState(false);
+
+  const customOpenAiProtocolOptions: Array<{
+    value: AiSdkPackage;
+    label: string;
+  }> = [
+    {
+      value: '@ai-sdk/openai',
+      label: t`OpenAI Responses API (native web search)`,
+    },
+    {
+      value: '@ai-sdk/openai-compatible',
+      label: t`OpenAI-compatible Chat Completions`,
+    },
+  ];
 
   const [addAiProvider] = useMutation(ADD_AI_PROVIDER, {
     client: apolloAdminClient,
@@ -85,7 +100,7 @@ export const SettingsAdminNewAiProvider = () => {
   const form = useForm<FormValues>({
     mode: 'onSubmit',
     defaultValues: {
-      npm: '@ai-sdk/openai-compatible',
+      npm: '@ai-sdk/openai',
       label: '',
       apiKey: '',
       baseUrl: '',
@@ -100,6 +115,9 @@ export const SettingsAdminNewAiProvider = () => {
   const npmPackage = form.watch('npm');
   const isBedrock = npmPackage === '@ai-sdk/amazon-bedrock';
   const isOpenAiCompatible = npmPackage === '@ai-sdk/openai-compatible';
+  const isOpenAiResponses = npmPackage === '@ai-sdk/openai';
+  const isCustomOpenAiEndpoint =
+    isCustomMode && (isOpenAiCompatible || isOpenAiResponses);
   const needsApiKey = !isBedrock;
   const isModelsDevWithoutNativeSdk =
     selectedModelsDevId !== null && isOpenAiCompatible;
@@ -121,7 +139,7 @@ export const SettingsAdminNewAiProvider = () => {
   const handleCustomMode = () => {
     setSelectedModelsDevId(null);
     setIsCustomMode(true);
-    form.setValue('npm', '@ai-sdk/openai-compatible');
+    form.setValue('npm', '@ai-sdk/openai');
     form.setValue('label', '');
   };
 
@@ -156,7 +174,7 @@ export const SettingsAdminNewAiProvider = () => {
         values.apiKey.trim() && {
           apiKey: values.apiKey.trim(),
         }),
-      ...(isOpenAiCompatible &&
+      ...(isCustomOpenAiEndpoint &&
         values.baseUrl.trim() && {
           baseUrl: values.baseUrl.trim(),
         }),
@@ -193,7 +211,7 @@ export const SettingsAdminNewAiProvider = () => {
       return;
     }
 
-    if (isOpenAiCompatible && !values.baseUrl.trim()) {
+    if (isCustomOpenAiEndpoint && !values.baseUrl.trim()) {
       form.setError('baseUrl', {
         type: 'manual',
         message: t`Base URL is required`,
@@ -254,19 +272,28 @@ export const SettingsAdminNewAiProvider = () => {
               title={t`Provider`}
               description={t`Select a known provider or create a custom one`}
             />
-            <Select
-              dropdownId="ai-provider-models-dev-select"
-              value={selectedModelsDevId ?? undefined}
-              onChange={handleProviderSelected}
-              options={providerOptions}
-              withSearchInput
-              fullWidth
-              callToActionButton={{
-                text: t`Custom provider`,
-                onClick: handleCustomMode,
-                Icon: IconPlus,
-              }}
-            />
+            {providerOptions.length > 0 ? (
+              <Select
+                dropdownId="ai-provider-models-dev-select"
+                value={selectedModelsDevId ?? undefined}
+                onChange={handleProviderSelected}
+                options={providerOptions}
+                withSearchInput
+                fullWidth
+                callToActionButton={{
+                  text: t`Custom provider`,
+                  onClick: handleCustomMode,
+                  Icon: IconPlus,
+                }}
+              />
+            ) : (
+              <SettingsCard
+                title={t`Custom provider`}
+                description={t`Configure an OpenAI-compatible endpoint`}
+                Icon={<IconPlus />}
+                onClick={handleCustomMode}
+              />
+            )}
           </Section>
 
           {isModelsDevWithoutNativeSdk && (
@@ -278,6 +305,28 @@ export const SettingsAdminNewAiProvider = () => {
 
           {hasSelected && (
             <>
+              {isCustomMode && (
+                <Section>
+                  <H2Title
+                    title={t`API Protocol`}
+                    description={t`Choose the endpoint protocol supported by your provider`}
+                  />
+                  <Controller
+                    name="npm"
+                    control={form.control}
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        dropdownId="ai-provider-api-protocol-select"
+                        value={value}
+                        onChange={onChange}
+                        options={customOpenAiProtocolOptions}
+                        fullWidth
+                      />
+                    )}
+                  />
+                </Section>
+              )}
+
               <Section>
                 <H2Title
                   title={t`Label`}
@@ -331,7 +380,7 @@ export const SettingsAdminNewAiProvider = () => {
                 </Section>
               )}
 
-              {isOpenAiCompatible && (
+              {isCustomOpenAiEndpoint && (
                 <Section>
                   <H2Title
                     title={t`Base URL`}

@@ -12,20 +12,13 @@ import { useCurrentResourceCredit } from '@/settings/billing/hooks/useCurrentRes
 import { useGetResourceCreditUsage } from '@/settings/billing/hooks/useGetResourceCreditUsage';
 import { useSplitPhaseItemsInPrices } from '@/settings/billing/hooks/useSplitPhaseItemsInPrices';
 import { usePermissionFlagMap } from '@/settings/roles/hooks/usePermissionFlagMap';
-import { getDocumentationUrl } from '@/support/utils/getDocumentationUrl';
 import { useModal } from '@/ui/layout/modal/hooks/useModal';
 import { useSubscriptionStatus } from '@/workspace/hooks/useSubscriptionStatus';
 import { styled } from '@linaria/react';
 import { t } from '@lingui/core/macro';
-import { DOCUMENTATION_PATHS } from 'twenty-shared/constants';
 import { SettingsPath } from 'twenty-shared/types';
 import { getSettingsPath, isDefined } from 'twenty-shared/utils';
-import {
-  IconChartBar,
-  IconCoins,
-  IconExternalLink,
-  IconInfoCircle,
-} from 'twenty-ui/icon';
+import { IconChartBar, IconCoins, IconInfoCircle } from 'twenty-ui/icon';
 import { ProgressBar } from 'twenty-ui/feedback';
 import { Button } from 'twenty-ui/input';
 import { Section } from 'twenty-ui/layout';
@@ -206,10 +199,6 @@ export const SettingsBillingCreditsSection = ({
   const resourceCreditPrices = getResourceCreditPricesByInterval(
     currentBillingSubscription.interval,
   );
-  const creditsDocumentationUrl = getDocumentationUrl({
-    path: DOCUMENTATION_PATHS.USER_GUIDE_BILLING_CAPABILITIES_CREDITS,
-  });
-
   return (
     <Section>
       <H2Title
@@ -307,19 +296,6 @@ export const SettingsBillingCreditsSection = ({
             size="small"
           />
         </UndecoratedLink>
-        <Button
-          Icon={IconExternalLink}
-          title={t`How credits work`}
-          variant="secondary"
-          size="small"
-          onClick={() =>
-            window.open(
-              creditsDocumentationUrl,
-              '_blank',
-              'noopener,noreferrer',
-            )
-          }
-        />
       </StyledCreditUsageFooterActions>
     </Section>
   );

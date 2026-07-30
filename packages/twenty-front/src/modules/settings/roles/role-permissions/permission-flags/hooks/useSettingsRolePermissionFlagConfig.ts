@@ -11,7 +11,6 @@ import {
   IconPlug,
   IconSettings,
   IconSettingsAutomation,
-  IconShield,
   IconSparkles,
   IconSpy,
   IconUsers,
@@ -100,15 +99,6 @@ export const useSettingsRolePermissionFlagConfig = ({
         Icon: IconSettingsAutomation,
         isRelevantForAgents: true,
         isRelevantForApiKeys: true,
-        isRelevantForUsers: true,
-      },
-      {
-        key: PermissionFlagType.SSO_BYPASS,
-        name: t`SSO Bypass`,
-        description: t`Enable bypass options`,
-        Icon: IconShield,
-        isRelevantForAgents: false,
-        isRelevantForApiKeys: false,
         isRelevantForUsers: true,
       },
       {

@@ -1,9 +1,6 @@
 import { ApplicationDisplay } from '@/applications/components/ApplicationDisplay';
-import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
-import { getDocumentationUrl } from '@/support/utils/getDocumentationUrl';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { SettingsTextInput } from '@/ui/input/components/SettingsTextInput';
-import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
 import { useLazyQuery, useMutation } from '@apollo/client/react';
 import { styled } from '@linaria/react';
 import { i18n } from '@lingui/core';
@@ -85,7 +82,6 @@ export const SettingsClaimApplicationSection = () => {
   const { t } = useLingui();
   const { enqueueSuccessSnackBar, enqueueErrorSnackBar } = useSnackBar();
 
-  const currentWorkspaceMember = useAtomStateValue(currentWorkspaceMemberState);
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -228,17 +224,6 @@ export const SettingsClaimApplicationSection = () => {
             variant="error"
             title={t`Could not claim this application`}
             description={i18n._(claimError.message)}
-            action={{
-              label: t`Read documentation`,
-              onClick: () =>
-                window.open(
-                  getDocumentationUrl({
-                    locale: currentWorkspaceMember?.locale,
-                    path: claimError.docPath,
-                  }),
-                  '_blank',
-                ),
-            }}
             isClosable
             onClose={dismissClaimError}
           />

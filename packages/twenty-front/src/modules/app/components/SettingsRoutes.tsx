@@ -116,14 +116,6 @@ const SettingsEditImapSmtpCaldavConnection = lazy(() =>
   ),
 );
 
-const SettingsNewEmailGroupChannel = lazy(() =>
-  import('@/settings/accounts/components/SettingsAccountsNewEmailGroupChannel').then(
-    (module) => ({
-      default: module.SettingsAccountsNewEmailGroupChannel,
-    }),
-  ),
-);
-
 const SettingsObjectDetailPage = lazy(() =>
   import('~/pages/settings/data-model/SettingsObjectDetailPage').then(
     (module) => ({
@@ -182,58 +174,10 @@ const SettingsLegalDpaNew = lazy(() =>
   })),
 );
 
-const SettingsWorkspaceCommunications = lazy(() =>
-  import('~/pages/settings/communications/SettingsWorkspaceCommunications').then(
-    (module) => ({
-      default: module.SettingsWorkspaceCommunications,
-    }),
-  ),
-);
-
-const SettingsWorkspaceCommunicationGroupChannelDetail = lazy(() =>
-  import('~/pages/settings/communications/SettingsWorkspaceCommunicationGroupChannelDetail').then(
-    (module) => ({
-      default: module.SettingsWorkspaceCommunicationGroupChannelDetail,
-    }),
-  ),
-);
-
-const SettingsWorkspaceNewUnsubscribeTopic = lazy(() =>
-  import('~/pages/settings/communications/SettingsWorkspaceNewUnsubscribeTopic').then(
-    (module) => ({
-      default: module.SettingsWorkspaceNewUnsubscribeTopic,
-    }),
-  ),
-);
-
-const SettingsWorkspaceUnsubscribeTopicDetail = lazy(() =>
-  import('~/pages/settings/communications/SettingsWorkspaceUnsubscribeTopicDetail').then(
-    (module) => ({
-      default: module.SettingsWorkspaceUnsubscribeTopicDetail,
-    }),
-  ),
-);
-
-const SettingsWorkspaceUnsubscribe = lazy(() =>
-  import('~/pages/settings/communications/SettingsWorkspaceUnsubscribe').then(
-    (module) => ({
-      default: module.SettingsWorkspaceUnsubscribe,
-    }),
-  ),
-);
-
 const SettingsSubdomainPage = lazy(() =>
   import('~/pages/settings/domains/SettingsSubdomainPage').then((module) => ({
     default: module.SettingsSubdomainPage,
   })),
-);
-
-const SettingsCustomDomainPage = lazy(() =>
-  import('~/pages/settings/domains/SettingsCustomDomainPage').then(
-    (module) => ({
-      default: module.SettingsCustomDomainPage,
-    }),
-  ),
 );
 
 const SettingsApiWebhooks = lazy(() =>
@@ -247,12 +191,6 @@ const SettingsApiWebhooks = lazy(() =>
 const SettingsAI = lazy(() =>
   import('~/pages/settings/ai/SettingsAI').then((module) => ({
     default: module.SettingsAI,
-  })),
-);
-
-const SettingsAiUsageUserDetail = lazy(() =>
-  import('~/pages/settings/ai/SettingsAiUsageUserDetail').then((module) => ({
-    default: module.SettingsAiUsageUserDetail,
   })),
 );
 
@@ -503,14 +441,6 @@ const SettingsObjectFieldEdit = lazy(() =>
   ),
 );
 
-const SettingsSecuritySSOIdentifyProvider = lazy(() =>
-  import('~/pages/settings/security/SettingsSecuritySSOIdentifyProvider').then(
-    (module) => ({
-      default: module.SettingsSecuritySSOIdentifyProvider,
-    }),
-  ),
-);
-
 const SettingsSecurityApprovedAccessDomain = lazy(() =>
   import('~/pages/settings/security/SettingsSecurityApprovedAccessDomain').then(
     (module) => ({
@@ -621,12 +551,6 @@ const SettingsAdminWorkspaceChatThread = lazy(() =>
   ),
 );
 
-const SettingsCommunity = lazy(() =>
-  import('~/pages/settings/community/SettingsCommunity').then((module) => ({
-    default: module.SettingsCommunity,
-  })),
-);
-
 const SettingsRoleCreate = lazy(() =>
   import('~/pages/settings/members/roles/SettingsRoleCreate').then(
     (module) => ({
@@ -712,30 +636,6 @@ export const SettingsRoutes = ({ isAdminPageEnabled }: SettingsRoutesProps) => (
         }
       >
         <Route path={SettingsPath.General} element={<SettingsGeneral />} />
-        <Route
-          path={SettingsPath.WorkspaceCommunications}
-          element={<SettingsWorkspaceCommunications />}
-        />
-        <Route
-          path={SettingsPath.NewEmailGroupChannel}
-          element={<SettingsNewEmailGroupChannel />}
-        />
-        <Route
-          path={SettingsPath.EmailGroupChannelDetail}
-          element={<SettingsWorkspaceCommunicationGroupChannelDetail />}
-        />
-        <Route
-          path={SettingsPath.NewUnsubscribeTopic}
-          element={<SettingsWorkspaceNewUnsubscribeTopic />}
-        />
-        <Route
-          path={SettingsPath.UnsubscribeTopicDetail}
-          element={<SettingsWorkspaceUnsubscribeTopicDetail />}
-        />
-        <Route
-          path={SettingsPath.Unsubscribe}
-          element={<SettingsWorkspaceUnsubscribe />}
-        />
         <Route path={SettingsPath.Billing} element={<SettingsBilling />} />
         <Route
           path={SettingsPath.BillingPlans}
@@ -749,10 +649,6 @@ export const SettingsRoutes = ({ isAdminPageEnabled }: SettingsRoutesProps) => (
         <Route
           path={SettingsPath.Subdomain}
           element={<SettingsSubdomainPage />}
-        />
-        <Route
-          path={SettingsPath.CustomDomain}
-          element={<SettingsCustomDomainPage />}
         />
         <Route
           path={SettingsPath.PublicDomain}
@@ -792,10 +688,6 @@ export const SettingsRoutes = ({ isAdminPageEnabled }: SettingsRoutesProps) => (
         <Route
           path={SettingsPath.AiSkillDetail}
           element={<SettingsSkillForm mode="edit" />}
-        />
-        <Route
-          path={SettingsPath.AiUsageUserDetail}
-          element={<SettingsAiUsageUserDetail />}
         />
         <Route
           path={SettingsPath.AiToolDetail}
@@ -1020,10 +912,6 @@ export const SettingsRoutes = ({ isAdminPageEnabled }: SettingsRoutesProps) => (
         }
       >
         <Route
-          path={SettingsPath.NewSSOIdentityProvider}
-          element={<SettingsSecuritySSOIdentifyProvider />}
-        />
-        <Route
           path={SettingsPath.NewApprovedAccessDomain}
           element={<SettingsSecurityApprovedAccessDomain />}
         />
@@ -1032,15 +920,6 @@ export const SettingsRoutes = ({ isAdminPageEnabled }: SettingsRoutesProps) => (
       {isAdminPageEnabled && (
         <>
           <Route path={SettingsPath.AdminPanel} element={<SettingsAdmin />} />
-          <Route
-            path={SettingsPath.Enterprise}
-            element={
-              <Navigate
-                to={getSettingsPath(SettingsPath.AdminPanelEnterprise)}
-                replace
-              />
-            }
-          />
           <Route
             path={SettingsPath.AdminPanelInferredVersion}
             element={<SettingsAdminInferredVersion />}
@@ -1096,16 +975,6 @@ export const SettingsRoutes = ({ isAdminPageEnabled }: SettingsRoutesProps) => (
           />
         </>
       )}
-
-      <Route
-        element={
-          <SettingsProtectedRouteWrapper
-            settingsPermission={PermissionFlagType.WORKSPACE}
-          />
-        }
-      >
-        <Route path={SettingsPath.Community} element={<SettingsCommunity />} />
-      </Route>
     </Routes>
   </Suspense>
 );

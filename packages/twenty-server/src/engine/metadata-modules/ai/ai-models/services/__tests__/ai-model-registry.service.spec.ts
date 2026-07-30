@@ -172,6 +172,27 @@ describe('AiModelRegistryService', () => {
     );
   });
 
+  it('should skip disabled models when selecting a default model', () => {
+    mockPreferencesService.getPreferences.mockReturnValue({
+      defaultFastModels: ['openai/gpt-5-mini', 'custom/fast-model'],
+      disabledModels: ['openai/gpt-5-mini'],
+    });
+
+    const getModelSpy = jest
+      .spyOn(service, 'getModel')
+      .mockImplementation((modelId: string) => ({
+        modelId,
+        sdkPackage: '@ai-sdk/openai-compatible',
+        model: {} as any,
+      }));
+
+    const result = service.getDefaultSpeedModel();
+
+    expect(result.modelId).toBe('custom/fast-model');
+    expect(getModelSpy).not.toHaveBeenCalledWith('openai/gpt-5-mini');
+    expect(getModelSpy).toHaveBeenCalledWith('custom/fast-model');
+  });
+
   it('should fall back to any available model if none in list are available', () => {
     mockPreferencesService.getPreferences.mockReturnValue({
       defaultFastModels: ['model-a', 'model-b', 'model-c'],

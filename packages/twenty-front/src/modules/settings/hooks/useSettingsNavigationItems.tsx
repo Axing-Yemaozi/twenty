@@ -1,20 +1,15 @@
-import { FeatureFlagKey, SettingsPath } from 'twenty-shared/types';
+import { SettingsPath } from 'twenty-shared/types';
 
 import { useAuth } from '@/auth/hooks/useAuth';
 import { currentUserState } from '@/auth/states/currentUserState';
-import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 import { billingState } from '@/client-config/states/billingState';
-import { supportChatState } from '@/client-config/states/supportChatState';
 import { usePermissionFlagMap } from '@/settings/roles/hooks/usePermissionFlagMap';
-import { getDocumentationUrl } from '@/support/utils/getDocumentationUrl';
 import {
   type NavigationDrawerItemIndentationLevel,
   type NavigationDrawerItemModifier,
 } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerItem';
 import { useAtomStateValue } from '@/ui/utilities/state/jotai/hooks/useAtomStateValue';
-import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { t } from '@lingui/core/macro';
-import { isNonEmptyString } from '@sniptt/guards';
 import {
   IconApps,
   IconAt,
@@ -23,12 +18,9 @@ import {
   type IconComponent,
   IconCurrencyDollar,
   IconDoorEnter,
-  IconHelpCircle,
   IconHierarchy2,
   IconLayout,
   IconMail,
-  IconMessage,
-  IconMessageCircle,
   IconPlug,
   IconServer,
   IconSettings,
@@ -60,22 +52,13 @@ export type SettingsNavigationItem = {
 const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
   const billing = useAtomStateValue(billingState);
   const { signOut } = useAuth();
-  const supportChat = useAtomStateValue(supportChatState);
-  const currentWorkspaceMember = useAtomStateValue(currentWorkspaceMemberState);
 
   const isBillingEnabled = billing?.isBillingEnabled ?? false;
   const currentUser = useAtomStateValue(currentUserState);
   const isAdminEnabled =
     (currentUser?.canImpersonate || currentUser?.canAccessFullAdminPanel) ??
     false;
-  const isSupportChatConfigured =
-    supportChat?.supportDriver === 'FRONT' &&
-    isNonEmptyString(supportChat.supportFrontChatId);
-
   const permissionMap = usePermissionFlagMap();
-  const isEmailGroupFeatureEnabled = useIsFeatureEnabled(
-    FeatureFlagKey.IS_EMAIL_GROUP_ENABLED,
-  );
   return [
     {
       label: t`User`,
@@ -173,14 +156,6 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           Icon: IconSparkles,
           isHidden: !permissionMap[PermissionFlagType.AI_SETTINGS],
         },
-        {
-          label: t`Communication`,
-          path: SettingsPath.WorkspaceCommunications,
-          Icon: IconMessageCircle,
-          isHidden:
-            !isEmailGroupFeatureEnabled ||
-            !permissionMap[PermissionFlagType.WORKSPACE],
-        },
       ],
     },
     {
@@ -191,27 +166,6 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           path: SettingsPath.AdminPanel,
           Icon: IconServer,
           isHidden: !isAdminEnabled,
-        },
-        {
-          label: t`Community`,
-          path: SettingsPath.Community,
-          Icon: IconUsers,
-          isHidden: !permissionMap[PermissionFlagType.WORKSPACE],
-        },
-        {
-          label: t`Support`,
-          onClick: () => window.FrontChat?.('show'),
-          Icon: IconMessage,
-          isHidden: !isSupportChatConfigured,
-        },
-        {
-          label: t`Documentation`,
-          onClick: () =>
-            window.open(
-              getDocumentationUrl({ locale: currentWorkspaceMember?.locale }),
-              '_blank',
-            ),
-          Icon: IconHelpCircle,
         },
         {
           label: t`Logout`,

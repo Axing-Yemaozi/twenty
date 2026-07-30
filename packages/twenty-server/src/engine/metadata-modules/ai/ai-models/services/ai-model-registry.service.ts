@@ -190,6 +190,10 @@ export class AiModelRegistryService {
     modelIds: string[],
   ): RegisteredAiModel | undefined {
     for (const modelId of modelIds) {
+      if (!this.isModelAdminAllowed(modelId)) {
+        continue;
+      }
+
       const model = this.getModel(modelId);
 
       if (model) {
@@ -216,7 +220,7 @@ export class AiModelRegistryService {
     let model = this.getFirstAvailableModelFromList(prefs[preferenceKey] ?? []);
 
     if (!model) {
-      model = this.getAvailableModels()[0];
+      model = this.getAdminFilteredModels()[0];
     }
 
     if (!model) {

@@ -28,6 +28,4 @@ Then inside the folder:
 \`\`\`bash
 cd my-twenty-app
 yarn twenty dev
-\`\`\`
-
-See the [Getting Started guide](https://twenty.com/developers/extend/apps/getting-started) for the full walkthrough, and [Building Apps](https://twenty.com/developers/extend/apps/building) for the \`defineApplication\` / \`defineEntity\` APIs.`;
+\`\`\``;

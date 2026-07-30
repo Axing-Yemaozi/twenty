@@ -123,3 +123,7 @@ const main = (): void => {
 };
 
 main();
+
+// @prettier/sync keeps worker stdio handles open after the synchronous work is
+// complete, so explicitly exit once every generated file has been written.
+process.exit(0);

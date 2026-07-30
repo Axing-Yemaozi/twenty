@@ -8,7 +8,6 @@ import { getSettingsPath } from 'twenty-shared/utils';
 
 import { t } from '@lingui/core/macro';
 import {
-  IconChartBar,
   IconCpu,
   IconLayoutDashboard,
   IconPlus,
@@ -22,7 +21,6 @@ import { SettingsAgentSkillsTab } from '~/pages/settings/ai/components/SettingsA
 import { SettingsAgentToolsTab } from '~/pages/settings/ai/components/SettingsAgentToolsTab';
 import { SettingsAiModelsTab } from '~/pages/settings/ai/components/SettingsAiModelsTab';
 import { SettingsAiOverviewTab } from '~/pages/settings/ai/components/SettingsAiOverviewTab';
-import { SettingsAiUsageTab } from '~/pages/settings/ai/components/SettingsAiUsageTab';
 import { SETTINGS_AI_TABS } from '~/pages/settings/ai/constants/SettingsAiTabs';
 import { useCreateTool } from '~/pages/settings/ai/hooks/useCreateTool';
 
@@ -55,11 +53,6 @@ export const SettingsAI = () => {
       title: t`Tools`,
       Icon: IconTool,
     },
-    {
-      id: SETTINGS_AI_TABS.TABS_IDS.USAGE,
-      title: t`Usage`,
-      Icon: IconChartBar,
-    },
   ];
 
   const resolvedTabId =
@@ -71,7 +64,6 @@ export const SettingsAI = () => {
   const isModelsTab = resolvedTabId === SETTINGS_AI_TABS.TABS_IDS.MODELS;
   const isSkillsTab = resolvedTabId === SETTINGS_AI_TABS.TABS_IDS.SKILLS;
   const isToolsTab = resolvedTabId === SETTINGS_AI_TABS.TABS_IDS.TOOLS;
-  const isUsageTab = resolvedTabId === SETTINGS_AI_TABS.TABS_IDS.USAGE;
 
   return (
     <SettingsPageLayout
@@ -144,7 +136,6 @@ export const SettingsAI = () => {
         {isModelsTab && <SettingsAiModelsTab />}
         {isSkillsTab && <SettingsAgentSkillsTab />}
         {isToolsTab && <SettingsAgentToolsTab />}
-        {isUsageTab && <SettingsAiUsageTab />}
       </SettingsPageContainer>
     </SettingsPageLayout>
   );
