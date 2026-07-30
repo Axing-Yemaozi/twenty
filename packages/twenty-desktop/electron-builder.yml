@@ -1,0 +1,42 @@
+appId: com.twenty.internal.desktop
+productName: Twenty CRM
+asar: true
+electronFuses:
+  runAsNode: false
+  enableCookieEncryption: true
+  enableNodeOptionsEnvironmentVariable: false
+  enableNodeCliInspectArguments: false
+  enableEmbeddedAsarIntegrityValidation: true
+  onlyLoadAppFromAsar: true
+  resetAdHocDarwinSignature: true
+directories:
+  output: release
+files:
+  - dist/main.cjs
+  - package.json
+extraResources:
+  - from: resources
+    to: offline
+    filter:
+      - '**/*'
+  - from: ../twenty-front/public/images/icons/android/android-launchericon-512-512.png
+    to: icon.png
+mac:
+  category: public.app-category.business
+  icon: ../twenty-front/public/images/icons/ios/1024.png
+  hardenedRuntime: true
+  target:
+    - target: dmg
+      arch:
+        - arm64
+        - x64
+win:
+  icon: ../twenty-front/public/images/icons/windows11/Square44x44Logo.targetsize-256.png
+  target:
+    - target: nsis
+      arch:
+        - x64
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+artifactName: '${productName}-${version}-${os}-${arch}.${ext}'

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src 'self'; script-src 'self'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Twenty CRM unavailable</title>
+    <link rel="stylesheet" href="offline.css" />
+  </head>
+  <body>
+    <main>
+      <section aria-labelledby="connection-title">
+        <p class="status">Connection unavailable</p>
+        <h1 id="connection-title">Twenty CRM cannot reach the server</h1>
+        <p class="server" id="server-address"></p>
+        <p class="detail" id="error-detail"></p>
+        <button id="retry-button" type="button">Retry</button>
+      </section>
+    </main>
+    <script src="offline.js"></script>
+  </body>
+</html>

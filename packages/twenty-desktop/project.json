@@ -1,0 +1,55 @@
+{
+  "name": "twenty-desktop",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/twenty-desktop/src",
+  "projectType": "application",
+  "tags": ["scope:desktop"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "inputs": ["default", { "env": "TWENTY_DESKTOP_PRODUCTION_URL" }],
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "npx tsup"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "npx electron dist/main.cjs"
+      }
+    },
+    "package:mac": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "inputs": ["default", { "env": "TWENTY_DESKTOP_PRODUCTION_URL" }],
+      "outputs": ["{projectRoot}/release"],
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "node scripts/validate-production-url.mjs && npx electron-builder --mac dmg --arm64 --x64 --publish never"
+      }
+    },
+    "package:win": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "inputs": ["default", { "env": "TWENTY_DESKTOP_PRODUCTION_URL" }],
+      "outputs": ["{projectRoot}/release"],
+      "options": {
+        "cwd": "{projectRoot}",
+        "command": "node scripts/validate-production-url.mjs && npx electron-builder --win nsis --x64 --publish never"
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "config": "{projectRoot}/vitest.config.ts"
+      }
+    },
+    "typecheck": {},
+    "lint": {}
+  }
+}

@@ -1,5 +1,14 @@
 .git
 .env
 **/node_modules
-.nx/cache
+.nx
+.cache
+coverage
+**/.env
+**/backups
+**/coverage
+**/dist
+**/release
+**/secrets
 packages/twenty-server/.env
+packages/twenty-desktop

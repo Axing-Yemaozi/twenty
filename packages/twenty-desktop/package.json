@@ -1,0 +1,30 @@
+{
+  "name": "twenty-desktop",
+  "version": "0.1.0",
+  "description": "Secure Electron shell for a managed Twenty CRM deployment.",
+  "private": true,
+  "type": "module",
+  "main": "dist/main.cjs",
+  "scripts": {
+    "build": "tsup",
+    "postinstall": "install-electron",
+    "start": "electron dist/main.cjs",
+    "package:mac": "node scripts/validate-production-url.mjs && tsup && electron-builder --mac dmg --arm64 --x64 --publish never",
+    "package:win": "node scripts/validate-production-url.mjs && tsup && electron-builder --win nsis --x64 --publish never",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@vitest/coverage-v8": "^4.1.10",
+    "electron": "43.2.0",
+    "electron-builder": "26.15.3",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  },
+  "engines": {
+    "node": "^24.5.0",
+    "npm": "please-use-yarn",
+    "yarn": "^4.0.2"
+  }
+}
